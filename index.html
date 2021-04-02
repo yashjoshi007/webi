@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+ <title>My First Project</title>
+</head>
+<body>
+
+ <div id="Registration">
+  <h1>Registration using Firebase!!!</h1>
+  <input type="text" name="email" id="email" placeholder="Enter Your Email"><br><br>
+  <input type="text" name="pass" id="password" placeholder="Enter Your Password"><br><br>
+  <input type="text" name="age" id="age" placeholder="Enter Your age"><br><br>
+  <input type="text" name="fname" id="fname" placeholder="Enter Your fname"><br><br>
+  <input type="text" name="cnic" id="cnic" placeholder="Enter Your cnic"><br><br>
+  <button onclick="RegisterUser()">Registration New User</button>
+  <button onclick="LoginUser()">Login User</button>
+ </div>
+
+ <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyBODg6wPVCBs9BetT6FvZSuHqF-7hLW7zk",
+    authDomain: "webi-14e18.firebaseapp.com",
+    projectId: "webi-14e18",
+    storageBucket: "webi-14e18.appspot.com",
+    messagingSenderId: "314127752522",
+    appId: "1:314127752522:web:bc145f7e529b92ad1cb5b3",
+    measurementId: "G-VFKCKFZFSZ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+
+  function RegisterUser(){
+      var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      var age = document.getElementById('age').value;
+      var fname = document.getElementById('fname').value;
+      var cnic = document.getElementById('cnic').value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then((userCredential) => {
+    // Signed in 
+    var user = userCredential.user;
+    window.alert("Registered Successfully :)");
+    var id = firebase.auth().currentUser.uid;
+    firebase.database().ref('Student/'+id).set({
+      fathername:fname,
+      userage:age,
+      CNIC:cnic,
+
+    });
+    // ...
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    window.alert("wrong id or password")
+    // ..
+  });
+  }
+
+  function LoginUser(){
+    var email = document.getElementById('email').value;
+      var password = document.getElementById('password').value;
+      firebase.auth().signInWithEmailAndPassword(email,password).then(function()
+      {
+        window.location.replace("file:///C:/Users/yash%20joshi/Desktop/weblog/index2.html");
+
+      }).catch(function(error ){
+
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        window.alert("Wrong credentials :(")
+
+      });
+  }
+</script>
+
+ </body>
+ </html>
