@@ -72,13 +72,13 @@
       var password = document.getElementById('password').value;
       firebase.auth().signInWithEmailAndPassword(email,password).then(function()
       {
-        window.location.replace("file:///C:/Users/yash%20joshi/Desktop/weblog/index2.html");
+        window.location.replace("index2.html");
 
       }).catch(function(error ){
 
         var errorCode = error.code;
         var errorMessage = error.message;
-        window.alert("Wrong credentials :(")
+        window.alert("Wrong credentials  :(")
 
       });
   }
