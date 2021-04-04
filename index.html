@@ -12,6 +12,7 @@
   <input type="text" name="fname" id="fname" placeholder="Enter Your fname"><br><br>
   <input type="text" name="cnic" id="cnic" placeholder="Enter Your cnic"><br><br>
   <button onclick="RegisterUser()">Registration New User</button>
+  <button onclick="sendVerificationEmail()">verify</button>
   <button onclick="LoginUser()">Login User</button>
  </div>
 
@@ -65,14 +66,27 @@
     window.alert("wrong id or password")
     // ..
   });
+  sendVerificationEmail();
   }
+  function sendVerificationEmail()  {
+    //Built in firebase function responsible for sending the verification email
+    var user = firebase.auth().currentUser;
+    user.sendEmailVerification().then(() => {
+        window.alert('Verification Email Sent Successfully !');
+        //redirecting the user to the profile page once everything is done correctly
+    }).catch(error => {
+        console.error(error);
+    });
+}
 
   function LoginUser(){
     var email = document.getElementById('email').value;
       var password = document.getElementById('password').value;
       firebase.auth().signInWithEmailAndPassword(email,password).then(function()
       {
+        var id = firebase.auth().currentUser.uid;
         window.location.replace("index2.html");
+        localStorage.setItem('id',id);
 
       }).catch(function(error ){
 

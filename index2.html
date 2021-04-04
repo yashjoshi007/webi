@@ -7,6 +7,88 @@
     <title>Document</title>
 </head>
 <body>
-    <p>You logged in and here u are you rock , come on guys !.</p>
+    <p>User Profile of a user.</p>
+
+    <h1 id="fname"></h1>
+    <h2 id = "age"></h2>
+    <h3 id = "cnic" ></h3>
+
+    <label>Select an image and upload :</label>
+    <input type="file" id="image" accept="image/*"><br><br>
+    <button type="button" onclick="upload()">Upload here</button>
+    
+
+
+     
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-analytics.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+          apiKey: "AIzaSyBODg6wPVCBs9BetT6FvZSuHqF-7hLW7zk",
+          authDomain: "webi-14e18.firebaseapp.com",
+          projectId: "webi-14e18",
+          storageBucket: "webi-14e18.appspot.com",
+          messagingSenderId: "314127752522",
+          appId: "1:314127752522:web:bc145f7e529b92ad1cb5b3",
+          measurementId: "G-VFKCKFZFSZ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+           
+      </script>
+      <script type="text/javascript">
+      var userId = localStorage.getItem('id');
+      firebase.database().ref('Student/'+userId).once('value').then(
+          function(snapshot){
+              var fname= (snapshot.val() && snapshot.val().fathername);
+              var cnic= (snapshot.val() && snapshot.val().CNIC);
+              var age= (snapshot.val() && snapshot.val().userage);
+
+
+              document.getElementById('fname').innerHTML = fname;
+              document.getElementById('age').innerHTML = age;
+              document.getElementById('cnic').innerHTML = cnic;
+
+  
+          }
+
+      );
+
+      function upload(){
+          
+        
+          var image = document.getElementById('image').files[0];
+
+          var imageName = image.name;
+
+          var storageRef = firebase.storage().ref('images/'+imageName);
+
+          var uploadTask = storageRef.put(image);
+
+          uploadTask.on('state_changed',function(snapshot){
+
+            var progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
+            console.log("upload is " + progress +"done ");
+
+          },function (error) {
+              console.log(error.message);
+
+              
+          },function(){
+              uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL){
+                  console.log(downloadURL);
+              });
+
+          });
+      }
+
+    </script>
 </body>
 </html>
